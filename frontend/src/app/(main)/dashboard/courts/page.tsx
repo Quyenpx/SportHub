@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,7 +17,7 @@ interface Court {
     pricePerHour: number;
 }
 
-export default function DashboardCourtsPage() {
+function DashboardCourtsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const venueId = searchParams.get('venueId');
@@ -361,5 +361,17 @@ export default function DashboardCourtsPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function DashboardCourtsPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+        }>
+            <DashboardCourtsContent />
+        </Suspense>
     );
 }
